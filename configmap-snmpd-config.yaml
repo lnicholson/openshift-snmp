@@ -1,0 +1,19 @@
+﻿kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: snmpd-config
+  namespace: openshift-logging
+data:
+  snmpd.conf: |2
+    sysname NODENAME
+    syslocation SNMPCOMMUNITY Datacenter
+    syscontact SNMPOWNER
+    sysdescr NODENAME NODEIP
+    rocommunity SNMPCOMMUNITY
+  start.sh: |2
+    cp /config/snmpd.conf /tmp/
+    /bin/sed -i -e "s/NODENAME/${NODENAME}/g" /tmp/snmpd.conf
+    /bin/sed -i -e "s/NODEIP/${NODEIP}/g" /tmp/snmpd.conf
+    /bin/sed -i -e "s/SNMPCOMMUNITY/${SNMPCOMMUNITY}/g" /tmp/snmpd.conf
+    /bin/sed -i -e "s/SNMPOWNER/${SNMPOWNER}/g" /tmp/snmpd.conf
+    /usr/local/sbin/snmpd -f -c /tmp/snmpd.conf

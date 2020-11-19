@@ -1,0 +1,85 @@
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: snmpd
+  namespace: openshift-snmp
+spec:
+  selector:
+    matchLabels:
+      app: snmpd
+  template:
+    metadata:
+      labels:
+        app: snmpd
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+        #type: infra
+      containers:
+      - name: snmpd
+        env:
+          - name: NODENAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: NODEIP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+          - name: SNMPCOMMUNITY
+            value: 'RTO'
+          - name: SNMPOWNER
+            value: 'dataylor'
+        image: really/snmpd
+        ports:
+        - containerPort: 161
+          protocol: UDP
+          hostPort: 161
+        command: ["/bin/sh","/config/start.sh"]
+        #command: ["/usr/local/sbin/snmpd","-f","-c","/config/snmpd.conf"]
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: 1Gi
+          requests:
+            cpu: 200m
+            memory: 1Gi
+        securityContext:
+          privileged: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /config
+          name: snmpd-config
+          readOnly: true
+        - mountPath: /host_proc
+          name: snmpd-host-proc
+          readOnly: true
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      schedulerName: default-scheduler
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+        operator: Exists
+      securityContext: {}
+      serviceAccount: snmpcollector
+      serviceAccountName: snmpcollector
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: snmpd-config
+        name: snmpd-config
+      - hostPath:
+          path: /proc
+          type: ""
+        name: snmpd-host-proc
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  revisionHistoryLimit: 10
