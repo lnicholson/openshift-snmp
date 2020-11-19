@@ -2,7 +2,7 @@
 apiVersion: v1
 metadata:
   name: snmpd-config
-  namespace: openshift-logging
+  namespace: openshift-snmp
 data:
   snmpd.conf: |2
     sysname NODENAME
