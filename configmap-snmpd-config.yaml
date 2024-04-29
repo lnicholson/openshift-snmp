@@ -23,4 +23,5 @@ data:
     /bin/sed -i -e "s/NODEIP/${NODEIP}/g" /tmp/snmpd.conf
     /bin/sed -i -e "s/SNMPCOMMUNITY/${SNMPCOMMUNITY}/g" /tmp/snmpd.conf
     /bin/sed -i -e "s/SNMPOWNER/${SNMPOWNER}/g" /tmp/snmpd.conf
+    /bin/sed -i -e "s/SNMPLOCATION/${SNMPLOCATION}/g" /tmp/snmpd.conf
     /usr/local/sbin/snmpd -f -c /tmp/snmpd.conf
