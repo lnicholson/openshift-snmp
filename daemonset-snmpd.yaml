@@ -27,7 +27,7 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SNMPCOMMUNITY
-            value: 'RTO'
+            value: 'jln-public'
           - name: SNMPOWNER
             value: 'dataylor'
         image: really/snmpd
