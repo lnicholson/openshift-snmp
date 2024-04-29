@@ -30,6 +30,8 @@ spec:
             value: 'jln-public'
           - name: SNMPOWNER
             value: 'Sys Engineering'
+          - name: SNMPLOCATION
+            value: 'Atlanta, GA, United States'
         image: really/snmpd
         ports:
         - containerPort: 161
