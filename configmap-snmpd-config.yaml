@@ -12,7 +12,7 @@ data:
     view all    included  .1                             80
     access MyROGroup ""      any       noauth    exact  all    none   none
     sysname NODENAME
-    syslocation SNMPCOMMUNITY
+    syslocation SNMPLOCATION
     syscontact SNMPOWNER
     sysdescr NODENAME NODEIP
     rocommunity SNMPCOMMUNITY
