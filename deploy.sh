@@ -10,5 +10,6 @@ oc create rolebinding snmp-collector-privileged-binding \
     --role=snmp-collector-privileged \
     --serviceaccount=openshift-snmp:snmpcollector \
      -n openshift-snmp
-oc create -f openshift/configmap-snmpd-config.yaml -n openshift-snmp
-oc create -f openshift/daemonset-snmpd.yaml -n openshift-snmp
+oc create -f configmap-snmpd-config.yaml -n openshift-snmp
+oc create -f daemonset-snmpd.yaml -n openshift-snmp
+oc create -f daemonset-snmpd-svc.yaml -n openshift-snmp
